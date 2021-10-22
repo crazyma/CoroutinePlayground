@@ -42,7 +42,7 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         setupViews()
-
+        setupViewModel()
     }
 
     private fun setupViewModel() {
@@ -53,7 +53,7 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun setupViews(){
+    private fun setupViews() {
         binding.apply {
             button11.setOnClickListener {
                 launchLifecycleJob()
@@ -72,6 +72,14 @@ class MainFragment : Fragment() {
             }
             button32.setOnClickListener {
                 cancelLifecycleJobRepeatedlyWhenStart()
+            }
+
+            testButton.setOnClickListener {
+
+            }
+
+            testButto2.setOnClickListener {
+
             }
         }
     }
