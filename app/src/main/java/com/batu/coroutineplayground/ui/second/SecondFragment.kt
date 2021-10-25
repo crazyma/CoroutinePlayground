@@ -6,14 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.*
 import com.batu.coroutineplayground.databinding.SecondFragmentBinding
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 /**
- * Test basic operation of StateFlow and SharedFlow
+ * Test basic operation of StateFlow and SharedFlow.
+ * Also the `repeatOnLifecycle` function
  *
  * @author Batu
  */
@@ -26,10 +27,16 @@ class SecondFragment : Fragment() {
     private lateinit var binding: SecondFragmentBinding
     private lateinit var viewModel: SecondViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.v("badu", "onCreate")
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.v("badu", "onCreateView")
         binding = SecondFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -41,8 +48,39 @@ class SecondFragment : Fragment() {
         setupViewModel()
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.v("badu", "onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.v("badu", "onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.v("badu", "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.v("badu", "onStop")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.v("badu", "onDestroyView")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.v("badu", "onDestroy")
+    }
+
     private fun setupViewModel() {
         viewModel.apply {
+            Log.e("badu", "$this")
             lifecycleScope.launch {
                 Log.v("badu", "111")
                 test2.collect {
@@ -61,6 +99,14 @@ class SecondFragment : Fragment() {
             lifecycleScope.launch {
                 test3.collect {
                     Log.d("badu", "test 3 in box 2 result: $it")
+                }
+            }
+
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.test4.collect {
+                        Log.i("badu", "(1) test 4 : $it")
+                    }
                 }
             }
         }

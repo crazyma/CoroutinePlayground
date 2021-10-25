@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class SecondViewModel : ViewModel() {
@@ -15,6 +16,16 @@ class SecondViewModel : ViewModel() {
     val test = MutableLiveData<String>()
     val test2 = MutableStateFlow<String?>(null)
     val test3 = MutableSharedFlow<String?>(replay = 0, extraBufferCapacity = 1)
+    val test4 = MutableStateFlow<Int>(0)
+
+    init{
+        viewModelScope.launch {
+            for(i in 1 until 100){
+                test4.value = i
+                delay(1000)
+            }
+        }
+    }
 
     fun loadSomethingWithStateFlow() {
         viewModelScope.launch {

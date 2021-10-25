@@ -125,7 +125,7 @@ class MainFragment : Fragment() {
         Log.i("badu", "launchLifecycleJob")
         job1?.cancel()
         job1 = lifecycleScope.launch {
-            for (i in 1..5) {
+            for (i in 1..10) {
                 delay(1000)
                 Log.d("badu", "$i second")
             }
@@ -145,7 +145,7 @@ class MainFragment : Fragment() {
         Log.i("badu", "launchLifecycleJobWhenStarted")
         job2?.cancel()
         job2 = lifecycleScope.launchWhenStarted {
-            for (i in 1..5) {
+            for (i in 1..10) {
                 delay(1000)
                 Log.d("badu", "$i second")
             }
@@ -170,7 +170,7 @@ class MainFragment : Fragment() {
             // lifecycle is in the STARTED state (or above) and cancels it when it's STOPPED.
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    for (i in 1..5) {
+                    for (i in 1..10) {
                         delay(1000)
                         Log.d("badu", "$i second")
                     }
