@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Launch coroutine by `lifecycleScope.launch`"
+        android:text="Launch coroutine by `lifecycleScope.launchWhenStarted`"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button1_1" />
 
@@ -68,7 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Launch coroutine by `lifecycleScope.launch`"
+        android:text="Launch coroutine by `LifecycleOwner.repeatOnLifecycle`"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button2_1" />
 
@@ -99,7 +99,7 @@
         app:layout_constraintTop_toBottomOf="@id/button3_1" />
 
     <Button
-        android:id="@+id/testButto2"
+        android:id="@+id/testButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"

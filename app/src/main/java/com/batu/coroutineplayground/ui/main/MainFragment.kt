@@ -30,12 +30,48 @@ class MainFragment : Fragment() {
     private var job2: Job? = null
     private var job3: Job? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.v("badu", "onCreate")
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.v("badu", "onCreateView")
         binding = MainFragmentBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.v("badu", "onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.v("badu", "onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.v("badu", "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.v("badu", "onStop")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.v("badu", "onDestroyView")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.v("badu", "onDestroy")
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -44,6 +80,7 @@ class MainFragment : Fragment() {
         setupViews()
         setupViewModel()
     }
+
 
     private fun setupViewModel() {
         viewModel.apply {
@@ -78,7 +115,7 @@ class MainFragment : Fragment() {
 
             }
 
-            testButto2.setOnClickListener {
+            testButton2.setOnClickListener {
 
             }
         }
@@ -125,14 +162,14 @@ class MainFragment : Fragment() {
     }
 
     private fun launchLifecycleJobRepeatedlyWhenStart() {
+        Log.i("badu", "launchLifecycleJobRepeatedlyWhenStart")
         // Start a coroutine in the lifecycle scope
-        lifecycleScope.launch {
+        job3?.cancel()
+        job3 = lifecycleScope.launch {
             // repeatOnLifecycle launches the block in a new coroutine every time the
             // lifecycle is in the STARTED state (or above) and cancels it when it's STOPPED.
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                Log.i("badu", "launchLifecycleJobRepeatedlyWhenStart")
-                job3?.cancel()
-                job3 = lifecycleScope.launchWhenStarted {
+                launch {
                     for (i in 1..5) {
                         delay(1000)
                         Log.d("badu", "$i second")

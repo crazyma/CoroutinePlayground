@@ -14,7 +14,7 @@ class SecondViewModel : ViewModel() {
 
     val test = MutableLiveData<String>()
     val test2 = MutableStateFlow<String?>(null)
-    val test3 = MutableSharedFlow<String?>(replay = 2, extraBufferCapacity = 1)
+    val test3 = MutableSharedFlow<String?>(replay = 0, extraBufferCapacity = 1)
 
     fun loadSomethingWithStateFlow() {
         viewModelScope.launch {
