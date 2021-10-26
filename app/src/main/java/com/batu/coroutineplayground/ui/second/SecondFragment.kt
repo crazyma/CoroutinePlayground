@@ -26,6 +26,10 @@ class SecondFragment : Fragment() {
         fun newInstance() = SecondFragment()
     }
 
+    enum class LaunchMethod{
+        Normal, LaunchX, RepeatOn
+    }
+
     private lateinit var binding: SecondFragmentBinding
     private lateinit var viewModel: SecondViewModel
 
@@ -103,15 +107,41 @@ class SecondFragment : Fragment() {
                     Log.d("badu", "test 3 in box 2 result: $it")
                 }
             }
+        }
+        collectMutableStateFlowTest4(LaunchMethod.RepeatOn)
+    }
 
-            viewLifecycleOwner.lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
+    private fun collectMutableStateFlowTest4(launchMethod: LaunchMethod){
+        when(launchMethod){
+            LaunchMethod.Normal -> {
+                // It would continue collecting emitted value, which would cause directly crash
+                viewLifecycleOwner.lifecycleScope.launch {
                     viewModel.test4.collect {
                         Log.i("badu", "(1) test 4 : $it")
                     }
                 }
             }
+            LaunchMethod.LaunchX -> {
+                // It would suspend the coroutine but not cancel it, which would cause hidden issue,
+                // then continue coroutine when back to correct lifecycle state.
+                viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                    viewModel.test4.collect {
+                        Log.i("badu", "(1) test 4 : $it")
+                    }
+                }
+            }
+            LaunchMethod.RepeatOn -> {
+                // It would cancel and relaunch coroutine in correct lifecycle state.
+                viewLifecycleOwner.lifecycleScope.launch {
+                    repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        viewModel.test4.collect {
+                            Log.i("badu", "(1) test 4 : $it")
+                        }
+                    }
+                }
+            }
         }
+
     }
 
     private fun setupViews() {
