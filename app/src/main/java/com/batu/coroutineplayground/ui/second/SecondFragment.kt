@@ -83,7 +83,7 @@ class SecondFragment : Fragment() {
     private fun setupViewModel() {
         viewModel.apply {
             Log.e("badu", "$this")
-            lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 Log.v("badu", "111")
                 test2.collect {
                     Log.d("badu", "result: $it")
@@ -92,19 +92,19 @@ class SecondFragment : Fragment() {
 
             }
 
-            lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 test3.collect {
                     Log.d("badu", "test 3 in box 1 result: $it")
                 }
             }
 
-            lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 test3.collect {
                     Log.d("badu", "test 3 in box 2 result: $it")
                 }
             }
 
-            lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.test4.collect {
                         Log.i("badu", "(1) test 4 : $it")

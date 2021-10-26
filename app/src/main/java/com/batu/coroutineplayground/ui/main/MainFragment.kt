@@ -124,7 +124,7 @@ class MainFragment : Fragment() {
     private fun launchLifecycleJob() {
         Log.i("badu", "launchLifecycleJob")
         job1?.cancel()
-        job1 = lifecycleScope.launch {
+        job1 = viewLifecycleOwner.lifecycleScope.launch {
             for (i in 1..10) {
                 delay(1000)
                 Log.d("badu", "$i second")
@@ -144,7 +144,7 @@ class MainFragment : Fragment() {
     private fun launchLifecycleJobWhenStarted() {
         Log.i("badu", "launchLifecycleJobWhenStarted")
         job2?.cancel()
-        job2 = lifecycleScope.launchWhenStarted {
+        job2 = viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             for (i in 1..10) {
                 delay(1000)
                 Log.d("badu", "$i second")
@@ -165,7 +165,7 @@ class MainFragment : Fragment() {
         Log.i("badu", "launchLifecycleJobRepeatedlyWhenStart")
         // Start a coroutine in the lifecycle scope
         job3?.cancel()
-        job3 = lifecycleScope.launch {
+        job3 = viewLifecycleOwner.lifecycleScope.launch {
             // repeatOnLifecycle launches the block in a new coroutine every time the
             // lifecycle is in the STARTED state (or above) and cancels it when it's STOPPED.
             repeatOnLifecycle(Lifecycle.State.STARTED) {
