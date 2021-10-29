@@ -6,11 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.*
 import com.batu.coroutineplayground.databinding.MainFragmentBinding
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -168,7 +166,7 @@ class MainFragment : Fragment() {
         job3 = viewLifecycleOwner.lifecycleScope.launch {
             // repeatOnLifecycle launches the block in a new coroutine every time the
             // lifecycle is in the STARTED state (or above) and cancels it when it's STOPPED.
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     for (i in 1..10) {
                         delay(1000)
@@ -182,10 +180,32 @@ class MainFragment : Fragment() {
                 }
             }
         }
+
+        viewLifecycleOwner.repeatLaunchOnLifecycle {
+
+        }
+
+        viewLifecycleOwner.lifecycle.repeatLaunch {
+
+        }
     }
 
     private fun cancelLifecycleJobRepeatedlyWhenStart() {
         job3?.cancel()
     }
 
+}
+
+fun LifecycleOwner.repeatLaunchOnLifecycle(
+    state: Lifecycle.State = Lifecycle.State.STARTED,
+    block: suspend CoroutineScope.() -> Unit
+) = lifecycleScope.launch {
+    repeatOnLifecycle(state, block)
+}
+
+fun Lifecycle.repeatLaunch(
+    state: Lifecycle.State = Lifecycle.State.STARTED,
+    block: suspend CoroutineScope.() -> Unit
+) = coroutineScope.launch {
+    repeatOnLifecycle(state, block)
 }
